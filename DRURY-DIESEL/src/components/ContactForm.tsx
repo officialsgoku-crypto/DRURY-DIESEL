@@ -1,39 +1,50 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 const ContactForm = () => {
   const { toast } = useToast();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    message: ''
+    firstName: "",
+    lastName: "",
+    email: "",
+    message: "",
   });
 
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // prevent default form submission
+    e.preventDefault();
 
+    // Netlify expects "form-name" field
     const form = new FormData();
-    form.append('form-name', 'contact');
-    form.append('firstName', formData.firstName);
-    form.append('lastName', formData.lastName);
-    form.append('email', formData.email);
-    form.append('message', formData.message);
+    form.append("form-name", "contact");
+    form.append("firstName", formData.firstName);
+    form.append("lastName", formData.lastName);
+    form.append("email", formData.email);
+    form.append("message", formData.message);
 
-    fetch('/', {
-      method: 'POST',
+    fetch("/", {
+      method: "POST",
       body: form,
     })
       .then(() => {
         toast({
           title: "Message Sent!",
-          description: "Thank you for contacting Drury Diesel Company. We'll get back to you soon.",
+          description:
+            "Thank you for contacting Drury Diesel Company. We'll get back to you soon.",
         });
-        setFormData({ firstName: '', lastName: '', email: '', message: '' });
+        setFormData({ firstName: "", lastName: "", email: "", message: "" });
       })
       .catch(() => {
         toast({
@@ -44,19 +55,13 @@ const ContactForm = () => {
       });
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
-  };
-
   return (
-    <section 
-      id="contact" 
+    <section
+      id="contact"
       className="parallax-section hero-gradient py-12 px-8 mb-0 text-foreground bg-cover bg-fixed"
       style={{
-        backgroundImage: "url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/17ac5dd9-3283-4b21-a8b9-9ef1b46274f7.png')"
+        backgroundImage:
+          "url('https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/17ac5dd9-3283-4b21-a8b9-9ef1b46274f7.png')",
       }}
     >
       <div className="content max-w-2xl mx-auto bg-black/90 p-8 rounded-xl">
@@ -64,30 +69,36 @@ const ContactForm = () => {
           Contact Us
         </h2>
         <p className="mb-6">
-          Have a question or need to book your truck in for service? The team at Drury Diesel Company is here to help. 
-          Whether it's repairs, servicing, diagnostics, or roadside breakdowns, we're just a call away.
+          Have a question or need to book your truck in for service? The team
+          at Drury Diesel Company is here to help. Whether it's repairs,
+          servicing, diagnostics, or roadside breakdowns, we're just a call away.
         </p>
 
-        {/* Hidden static form for Netlify detection */}
-        <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+        {/* Hidden static form for Netlify to detect */}
+        <form
+          name="contact"
+          netlify
+          netlify-honeypot="bot-field"
+          hidden
+        >
           <input type="hidden" name="form-name" value="contact" />
           <input name="bot-field" />
-          <input name="firstName" />
-          <input name="lastName" />
-          <input name="email" />
-          <textarea name="message" />
+          <input type="text" name="firstName" />
+          <input type="text" name="lastName" />
+          <input type="email" name="email" />
+          <textarea name="message"></textarea>
         </form>
 
         {/* Visible React form */}
-        <form 
-          name="contact" 
-          method="POST" 
-          data-netlify="true" 
-          onSubmit={handleSubmit} 
+        <form
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          onSubmit={handleSubmit}
           className="max-w-lg mx-auto"
         >
           <input type="hidden" name="form-name" value="contact" />
-          <div style={{ display: 'none' }}>
+          <div style={{ display: "none" }}>
             <label>
               Don't fill this out if you're human: <input name="bot-field" />
             </label>
@@ -156,7 +167,7 @@ const ContactForm = () => {
             />
           </div>
 
-          <Button 
+          <Button
             type="submit"
             className="bg-primary text-primary-foreground border-none py-4 px-8 text-xl rounded-md cursor-pointer transition-all duration-300 hover:bg-diesel-blue-hover hover:-translate-y-1"
           >
