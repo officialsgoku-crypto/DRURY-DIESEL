@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Drury Diesel Company Design System */
+@layer base {
+  :root {
+    /* Core Brand Colors */
+    --background: 0 0% 0%; /* Pure black */
+    --foreground: 0 0% 100%; /* Pure white */
+    
+    --card: 0 0% 10%; /* Dark gray */
+    --card-foreground: 0 0% 100%;
+    
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 100%;
+    
+    --primary: 195 100% 50%; /* Professional blue #00bfff */
+    --primary-foreground: 0 0% 0%;
+    
+    --secondary: 0 0% 10%; /* Dark secondary */
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 80%;
+    
+    --accent: 195 100% 50%; /* Matching blue accent */
+    --accent-foreground: 0 0% 0%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 195 100% 50%;
+    
+    --radius: 0.5rem;
+    
+    /* Industrial Design Tokens */
+    --diesel-blue: 195 100% 50%; /* #00bfff */
+    --diesel-blue-hover: 195 100% 45%; /* #00a0ff */
+    --diesel-dark: 0 0% 7%; /* #1a1a1a */
+    --diesel-darker: 0 0% 0%; /* #000000 */
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--diesel-darker)), hsl(var(--diesel-dark)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--diesel-darker)), hsl(var(--diesel-dark)));
+    
+    /* Shadows */
+    --shadow-industrial: 0 4px 8px rgba(0,0,0,0.5);
+    --shadow-glow: 0 0 20px rgba(0,191,255,0.3);
+    --shadow-text: 0 0 20px rgba(0,0,0,0.7);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-parallax: opacity 1s ease-out, transform 1s ease-out;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-['Roboto',sans-serif];
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    background-image: url('/src/assets/drury-diesel-background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+}
+
+@layer components {
+  .parallax-section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: var(--transition-parallax);
+  }
+  
+  .parallax-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+  
+  .industrial-shadow {
+    box-shadow: var(--shadow-industrial);
+  }
+  
+  .glow-shadow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  .text-shadow {
+    text-shadow: var(--shadow-text);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .animation-delay-300 {
+    animation-delay: 0.3s;
+  }
+
+  .animation-delay-600 {
+    animation-delay: 0.6s;
+  }
+}
