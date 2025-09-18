@@ -49,7 +49,6 @@ const ContactForm = () => {
           name="contact" 
           method="POST" 
           data-netlify="true" 
-          data-netlify-honeypot="bot-field"
           onSubmit={handleSubmit} 
           className="max-w-lg mx-auto"
         >
