@@ -23,14 +23,36 @@ const ContactForm = () => {
     }));
   };
 
-  const handleSubmit = () => {
-    // Toast will show immediately after submission
-    toast({
-      title: "Message Sent!",
-      description:
-        "Thank you for contacting Drury Diesel Company. We'll get back to you soon.",
-    });
-    setFormData({ firstName: "", lastName: "", email: "", message: "" });
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault(); // Prevent default page reload
+
+    // Create a FormData object to send to Netlify
+    const form = new FormData();
+    form.append("form-name", "contact");
+    form.append("firstName", formData.firstName);
+    form.append("lastName", formData.lastName);
+    form.append("email", formData.email);
+    form.append("message", formData.message);
+
+    fetch("/", {
+      method: "POST",
+      body: form,
+    })
+      .then(() => {
+        toast({
+          title: "Message Sent!",
+          description:
+            "Thank you for contacting Drury Diesel Company. We'll get back to you soon.",
+        });
+        setFormData({ firstName: "", lastName: "", email: "", message: "" });
+      })
+      .catch(() => {
+        toast({
+          title: "Error",
+          description: "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+      });
   };
 
   return (
@@ -52,6 +74,17 @@ const ContactForm = () => {
           servicing, diagnostics, or roadside breakdowns, we're just a call away.
         </p>
 
+        {/* Hidden static form so Netlify detects it */}
+        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" hidden>
+          <input type="hidden" name="form-name" value="contact" />
+          <input name="bot-field" />
+          <input type="text" name="firstName" />
+          <input type="text" name="lastName" />
+          <input type="email" name="email" />
+          <textarea name="message"></textarea>
+        </form>
+
+        {/* Visible React form */}
         <form
           name="contact"
           method="POST"
