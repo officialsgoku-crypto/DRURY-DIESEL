@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 
 const ContactForm = () => {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -19,6 +21,16 @@ const ContactForm = () => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
+  };
+
+  const handleSubmit = () => {
+    // Toast will show immediately after submission
+    toast({
+      title: "Message Sent!",
+      description:
+        "Thank you for contacting Drury Diesel Company. We'll get back to you soon.",
+    });
+    setFormData({ firstName: "", lastName: "", email: "", message: "" });
   };
 
   return (
@@ -40,27 +52,12 @@ const ContactForm = () => {
           servicing, diagnostics, or roadside breakdowns, we're just a call away.
         </p>
 
-        {/* Hidden static form for Netlify to detect */}
-        <form
-          name="contact"
-          netlify
-          netlify-honeypot="bot-field"
-          hidden
-        >
-          <input type="hidden" name="form-name" value="contact" />
-          <input name="bot-field" />
-          <input type="text" name="firstName" />
-          <input type="text" name="lastName" />
-          <input type="email" name="email" />
-          <textarea name="message"></textarea>
-        </form>
-
-        {/* Visible React form */}
         <form
           name="contact"
           method="POST"
           data-netlify="true"
-          data-netlify-honeypot="bot-field"
+          netlify-honeypot="bot-field"
+          onSubmit={handleSubmit}
           className="max-w-lg mx-auto"
         >
           <input type="hidden" name="form-name" value="contact" />
