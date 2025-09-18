@@ -15,11 +15,33 @@ const ContactForm = () => {
   });
 
   const handleSubmit = (e: React.FormEvent) => {
-    // Form will be handled by Netlify
-    toast({
-      title: "Message Sent!",
-      description: "Thank you for contacting Drury Diesel Company. We'll get back to you soon.",
-    });
+    e.preventDefault(); // prevent default form submission
+
+    const form = new FormData();
+    form.append('form-name', 'contact');
+    form.append('firstName', formData.firstName);
+    form.append('lastName', formData.lastName);
+    form.append('email', formData.email);
+    form.append('message', formData.message);
+
+    fetch('/', {
+      method: 'POST',
+      body: form,
+    })
+      .then(() => {
+        toast({
+          title: "Message Sent!",
+          description: "Thank you for contacting Drury Diesel Company. We'll get back to you soon.",
+        });
+        setFormData({ firstName: '', lastName: '', email: '', message: '' });
+      })
+      .catch(() => {
+        toast({
+          title: "Error",
+          description: "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+      });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -45,6 +67,18 @@ const ContactForm = () => {
           Have a question or need to book your truck in for service? The team at Drury Diesel Company is here to help. 
           Whether it's repairs, servicing, diagnostics, or roadside breakdowns, we're just a call away.
         </p>
+
+        {/* Hidden static form for Netlify detection */}
+        <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+          <input type="hidden" name="form-name" value="contact" />
+          <input name="bot-field" />
+          <input name="firstName" />
+          <input name="lastName" />
+          <input name="email" />
+          <textarea name="message" />
+        </form>
+
+        {/* Visible React form */}
         <form 
           name="contact" 
           method="POST" 
@@ -58,6 +92,7 @@ const ContactForm = () => {
               Don't fill this out if you're human: <input name="bot-field" />
             </label>
           </div>
+
           <div className="mb-6">
             <Label htmlFor="firstName" className="block mb-2 font-semibold text-primary">
               First Name <span className="text-destructive">*</span>
