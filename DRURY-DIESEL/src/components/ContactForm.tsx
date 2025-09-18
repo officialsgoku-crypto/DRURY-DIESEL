@@ -3,10 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 
 const ContactForm = () => {
-  const { toast } = useToast();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -21,38 +19,6 @@ const ContactForm = () => {
       ...prev,
       [e.target.name]: e.target.value,
     }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Netlify expects "form-name" field
-    const form = new FormData();
-    form.append("form-name", "contact");
-    form.append("firstName", formData.firstName);
-    form.append("lastName", formData.lastName);
-    form.append("email", formData.email);
-    form.append("message", formData.message);
-
-    fetch("/", {
-      method: "POST",
-      body: form,
-    })
-      .then(() => {
-        toast({
-          title: "Message Sent!",
-          description:
-            "Thank you for contacting Drury Diesel Company. We'll get back to you soon.",
-        });
-        setFormData({ firstName: "", lastName: "", email: "", message: "" });
-      })
-      .catch(() => {
-        toast({
-          title: "Error",
-          description: "Something went wrong. Please try again.",
-          variant: "destructive",
-        });
-      });
   };
 
   return (
@@ -94,7 +60,7 @@ const ContactForm = () => {
           name="contact"
           method="POST"
           data-netlify="true"
-          onSubmit={handleSubmit}
+          data-netlify-honeypot="bot-field"
           className="max-w-lg mx-auto"
         >
           <input type="hidden" name="form-name" value="contact" />
